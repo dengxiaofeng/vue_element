@@ -1,0 +1,80 @@
+<div class="login-container pull-height" @keyup.enter.native="handleLogin">
+         <div class="login-info text-white animated fadeInLeft">
+         <h2 class="login-info-title">{{website.info.title}}</h2>
+         <ul class="login-info-list">
+           <li class="login-info-item" v-for="item in website.info.list">
+             <i class="el-icon-check"></i>&nbsp;{{item}}
+            </li>
+         </ul>
+      </div>
+     <div class="login-border  animated fadeInRight">
+      <!--登录表单 start-->
+      <div class="login-main">
+        <h4 class="login-title">登录{{website.title}}
+            <el-color-picker size="small" class="theme-picker" popper-class="theme-picker-dropdown" ></el-color-picker>
+        </h4>
+        <el-tabs v-model="activeName">
+          <!--用户名登录 start-->
+          <el-tab-pane label="用户密码" name="user">
+          <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+            <el-form-item prop="username">
+              <el-input size="small"  @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名">
+                <i slot="prefix" class="icon-yonghu"></i>
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+               <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.password" :type="passwordType" auto-complete="off" placeholder="请输入密码">
+                 <i class="el-icon-view el-input__icon" slot="suffix"  @click="showPassword" ></i>
+                 <i slot="prefix" class="icon-mima"></i>
+               </el-input>
+            </el-form-item>
+            <el-form-item >
+              <el-row :span="24">
+                <el-col :span="14">
+                  <el-input size="small" @keyup.enter.native="handleLogin" :maxlength="code.len" v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码">
+                    <i slot="prefix" class="icon-yanzhengma"></i>
+                  </el-input>
+                </el-col>
+                <el-col :span="10">
+                  <div class="login-code">
+                    <span class="login-code-img" @click="refreshCode" v-if="code.type == 'text'">{{code.value}}</span>
+                    <img :src="code.src" class="login-code-img" @click="refreshCode" v-else/>
+                    <i class="icon-shuaxin login-code-icon" @click="refreshCode"></i>
+                   </div>
+                </el-col>
+              </el-row>
+        
+            </el-form-item>
+            <el-checkbox v-model="checked">记住账号</el-checkbox>
+              <el-form-item>
+                  <el-button type="primary" size="small" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+              </el-form-item>
+          </el-form>
+        </el-tab-pane>
+           <!--用户名登录 end-->
+          <!--手机登录 start-->
+       <el-tab-pane label="短信验证码" name="code">
+    <el-form class="login-form" status-icon ref="phoneForm" :rules="loginPhoneRules" :model="phoneForm"  label-width="0">
+       <el-form-item prop="phone">
+          <el-input size="small" @keyup.enter.native="handlePhoneLogin"  v-model="phoneForm.phone" auto-complete="off" placeholder="请输入手机号码">
+            <i slot="prefix" class="icon-shouji"></i>
+          </el-input>
+      </el-form-item>
+      <el-form-item prop="code">
+          <el-input size="small" @keyup.enter.native="handlePhoneLogin"  v-model="phoneForm.code" auto-complete="off" placeholder="请输入验证码">
+              <i slot="prefix" class="icon-yanzhengma"></i>
+              <span class="msg-text" >{{msgText}}</span>
+          </el-input>
+      </el-form-item>
+      <el-form-item>
+           <el-button size="small" type="primary" @click.native.prevent="handlePhoneLogin" class="login-submit">登录</el-button>
+      </el-form-item>
+    </el-form>
+        </el-tab-pane> 
+        <!--手机登录 end-->
+        </el-tabs>
+      </div>
+       <!--登录表单 end-->
+    </div>
+
+  </div>
